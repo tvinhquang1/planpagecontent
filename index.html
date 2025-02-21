@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kế hoạch nội dung Fanpage - Tháng 3</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        .calendar-container {
+            text-align: center;
+            padding: 20px;
+        }
+        .month-selector {
+            margin-bottom: 20px;
+        }
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        .day {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.2s ease;
+            cursor: pointer;
+        }
+        .day:hover {
+            transform: scale(1.05);
+        }
+        .day-header {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333; /* Màu chữ tối */
+        }
+        .day-content {
+            font-size: 14px;
+            color: #555; /* Màu chữ nhạt */
+        }
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .weekday {
+            background-color: #4CAF50;
+            border-radius: 8px;
+            padding: 10px;
+            font-weight: bold;
+            text-align: center;
+            color: #fff;
+        }
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 2px solid #ddd; /* Thêm khung cho modal */
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #000;
+        }
+        /* Pastel colors for topics */
+        .topic-1 { background-color: #FFD1DC; } /* Hồng phấn */
+        .topic-2 { background-color: #C8E6C9; } /* Xanh lá nhạt */
+        .topic-3 { background-color: #BBDEFB; } /* Xanh dương nhạt */
+        .topic-4 { background-color: #FFF9C4; } /* Vàng nhạt */
+        .topic-5 { background-color: #F8BBD0; } /* Hồng đào nhạt */
+        .topic-6 { background-color: #B2EBF2; } /* Cyan nhạt */
+        .topic-7 { background-color: #E1BEE7; } /* Tím nhạt */
+
+        /* Modal header background colors */
+        .modal-topic-1 { background-color: #FFD1DC; }
+        .modal-topic-2 { background-color: #C8E6C9; }
+        .modal-topic-3 { background-color: #BBDEFB; }
+        .modal-topic-4 { background-color: #FFF9C4; }
+        .modal-topic-5 { background-color: #F8BBD0; }
+        .modal-topic-6 { background-color: #B2EBF2; }
+        .modal-topic-7 { background-color: #E1BEE7; }
+
+        /* Modal title and body */
+        #modal-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333; /* Màu chữ tối */
+            padding: 15px;
+            margin: -20px -20px 10px -20px; /* Đảm bảo phủ kín đầu modal */
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            text-align: center; /* Căn giữa tiêu đề */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 80px; /* Chiều cao cố định để căn giữa */
+        }
+        #modal-body {
+            font-size: 16px;
+            color: #333; /* Màu chữ tối */
+            line-height: 1.6; /* Khoảng cách dòng dễ đọc */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            /* Adjust calendar layout for mobile */
+            .calendar {
+                grid-template-columns: repeat(3, 1fr); /* Chỉ hiển thị 3 cột trên mobile */
+                gap: 8px;
+            }
+            .day {
+                padding: 10px;
+                font-size: 14px;
+            }
+            .day-header {
+                font-size: 14px;
+            }
+            .day-content {
+                font-size: 12px;
+            }
+            .weekdays {
+                grid-template-columns: repeat(3, 1fr); /* Chỉ hiển thị 3 cột trên mobile */
+                gap: 8px;
+            }
+            .weekday {
+                font-size: 12px;
+                padding: 8px;
+            }
+            /* Adjust modal size for mobile */
+            .modal-content {
+                width: 90%;
+                max-width: none;
+                padding: 15px;
+            }
+            #modal-title {
+                font-size: 20px;
+                padding: 10px;
+                height: 60px; /* Giảm chiều cao cho mobile */
+            }
+            #modal-body {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar-container">
+        <h1 style="text-align: center; color: #333;">Kế hoạch nội dung Fanpage</h1>
+        <div class="month-selector">
+            <button onclick="changeMonth(-1)" style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Tháng trước</button>
+            <span id="current-month" style="font-size: 24px; margin: 0 20px; color: #4CAF50; font-weight: bold;">Tháng 3</span>
+            <button onclick="changeMonth(1)" style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Tháng sau</button>
+        </div>
+        <div class="weekdays">
+            <div class="weekday">Thứ Hai</div>
+            <div class="weekday">Thứ Ba</div>
+            <div class="weekday">Thứ Tư</div>
+            <div class="weekday">Thứ Năm</div>
+            <div class="weekday">Thứ Sáu</div>
+            <div class="weekday">Thứ Bảy</div>
+            <div class="weekday">Chủ Nhật</div>
+        </div>
+        <div id="calendar" class="calendar"></div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-body"></p>
+        </div>
+    </div>
+
+    <script>
+        const topics = [
+            "Rối loạn cương dương là gì?",
+            "Thực phẩm cải thiện sinh lý nam giới",
+            "Bài tập tăng cường lưu thông máu",
+            "Căng thẳng và sức khỏe sinh lý",
+            "Bỏ thói quen xấu",
+            "ED và các bệnh lý liên quan",
+            "Câu chuyện truyền cảm hứng"
+        ];
+
+        const topicColors = {
+            "Rối loạn cương dương là gì?": "topic-1",
+            "Thực phẩm cải thiện sinh lý nam giới": "topic-2",
+            "Bài tập tăng cường lưu thông máu": "topic-3",
+            "Căng thẳng và sức khỏe sinh lý": "topic-4",
+            "Bỏ thói quen xấu": "topic-5",
+            "ED và các bệnh lý liên quan": "topic-6",
+            "Câu chuyện truyền cảm hứng": "topic-7"
+        };
+
+        const contents = {
+            "Rối loạn cương dương là gì?": `
+                <strong>Định nghĩa:</strong> Rối loạn cương dương (ED) là tình trạng khó đạt hoặc duy trì sự cương cứng đủ để thực hiện hoạt động tình dục.<br><br>
+                <strong>Nguyên nhân:</strong> Tâm lý căng thẳng, bệnh lý như tiểu đường, tim mạch, béo phì, hút thuốc lá, uống rượu bia quá mức.<br><br>
+                <strong>Dấu hiệu:</strong> Khó cương cứng, giảm ham muốn, mất tự tin trong đời sống vợ chồng.<br><br>
+                <strong>Lời khuyên:</strong> Đừng ngại tìm kiếm sự hỗ trợ từ bác sĩ chuyên khoa.
+            `,
+            "Thực phẩm cải thiện sinh lý nam giới": `
+                <strong>Rau xanh:</strong> Cải bó xôi, rau bina giàu nitrat giúp tăng cường lưu thông máu.<br>
+                <strong>Trái cây:</strong> Chuối, dưa hấu, quả mọng giàu chất chống oxy hóa.<br>
+                <strong>Hải sản:</strong> Cá hồi, hàu chứa omega-3 và kẽm.<br>
+                <strong>Các loại hạt:</strong> Hạnh nhân, óc chó giàu chất béo lành mạnh.
+            `,
+            "Bài tập tăng cường lưu thông máu": `
+                <strong>Bài tập Kegel:</strong> Co thắt cơ sàn chậu, giữ 5-10 giây, lặp lại 10-15 lần.<br>
+                <strong>Yoga:</strong> Tư thế con mèo, tư thế cây cầu.<br>
+                <strong>Đi bộ nhanh:</strong> 30 phút mỗi ngày.<br>
+                <strong>Bơi lội:</strong> Tăng cường sức khỏe tim mạch.
+            `,
+            "Căng thẳng và sức khỏe sinh lý": `
+                <strong>Mối liên hệ:</strong> Căng thẳng làm tăng cortisol, ảnh hưởng hormone testosterone.<br>
+                <strong>Giải pháp:</strong> Thiền định, ngủ đủ giấc, giải trí lành mạnh.<br>
+                <strong>Lời khuyên:</strong> Tìm kiếm sự hỗ trợ từ người thân hoặc chuyên gia tâm lý.
+            `,
+            "Bỏ thói quen xấu": `
+                <strong>Tác hại của hút thuốc:</strong> Làm hẹp mạch máu.<br>
+                <strong>Uống rượu bia:</strong> Ảnh hưởng hormone testosterone.<br>
+                <strong>Lười vận động:</strong> Gây béo phì, tăng nguy cơ ED.<br>
+                <strong>Lời khuyên:</strong> Từ bỏ dần các thói quen xấu.
+            `,
+            "ED và các bệnh lý liên quan": `
+                <strong>Mối liên hệ:</strong> ED liên quan đến tiểu đường, cao huyết áp, tim mạch.<br>
+                <strong>Kiểm tra sức khỏe:</strong> Phát hiện sớm các bệnh lý để điều trị kịp thời.<br>
+                <strong>Lời khuyên:</strong> Tuân thủ điều trị y khoa.
+            `,
+            "Câu chuyện truyền cảm hứng": `
+                <strong>Ví dụ:</strong> Một người đàn ông từng mắc ED do căng thẳng công việc. Sau khi thay đổi lối sống, anh đã cải thiện đáng kể sức khỏe sinh lý.<br>
+                <strong>Thông điệp:</strong> Hãy kiên nhẫn và tin tưởng vào bản thân.
+            `
+        };
+
+        let currentMonth = 3; // Tháng hiện tại (3 = Tháng 3)
+        const monthNames = ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"];
+
+        function generateCalendar(year, month) {
+            const calendarElement = document.getElementById('calendar');
+            calendarElement.innerHTML = '';
+
+            const firstDay = new Date(year, month - 1, 1).getDay(); // Ngày đầu tiên của tháng
+            const daysInMonth = new Date(year, month, 0).getDate(); // Số ngày trong tháng
+
+            // Thêm ô trống cho các ngày của tuần trước
+            for (let i = 0; i < firstDay; i++) {
+                const emptyDay = document.createElement('div');
+                emptyDay.classList.add('day');
+                calendarElement.appendChild(emptyDay);
+            }
+
+            // Thêm các ngày của tháng
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayElement = document.createElement('div');
+                dayElement.classList.add('day');
+
+                const topicIndex = (day - 1) % topics.length;
+                const topic = topics[topicIndex];
+                const colorClass = topicColors[topic];
+
+                dayElement.classList.add(colorClass); // Áp dụng màu nền pastel
+                dayElement.innerHTML = `
+                    <div class="day-header">${day}</div>
+                    <div class="day-content">${topic}</div>
+                `;
+                dayElement.onclick = () => openModal(topic, contents[topic], colorClass);
+
+                calendarElement.appendChild(dayElement);
+            }
+
+            // Cập nhật tên tháng
+            document.getElementById('current-month').innerText = monthNames[month - 1];
+        }
+
+        function changeMonth(offset) {
+            const now = new Date();
+            currentMonth += offset;
+
+            if (currentMonth < 1) {
+                currentMonth = 12;
+                now.setFullYear(now.getFullYear() - 1);
+            } else if (currentMonth > 12) {
+                currentMonth = 1;
+                now.setFullYear(now.getFullYear() + 1);
+            }
+
+            generateCalendar(now.getFullYear(), currentMonth);
+        }
+
+        function openModal(title, content, colorClass) {
+            const modalTitle = document.getElementById('modal-title');
+            const modalContent = document.getElementById('modal-body');
+
+            // Xóa tất cả các lớp màu cũ
+            modalTitle.className = '';
+            modalTitle.classList.add('modal-' + colorClass.split('-')[1]); // Áp dụng màu nền modal
+            modalTitle.innerText = title;
+            modalContent.innerHTML = content;
+
+            document.getElementById('myModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('myModal').style.display = 'none';
+        }
+
+        // Khởi tạo lịch
+        generateCalendar(new Date().getFullYear(), currentMonth);
+    </script>
+</body>
+</html>
